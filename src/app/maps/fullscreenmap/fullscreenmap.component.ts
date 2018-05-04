@@ -16,7 +16,7 @@ draggable?: boolean;
 
 export class FullScreenMapsComponent implements OnInit {
     ngOnInit() {
-        const myLatlng = new google.maps.LatLng(40.748817, -73.985428);
+        const myLatlng = new google.maps.LatLng(13.667837, 100.558402);
         const mapOptions = {
             zoom: 13,
             center: myLatlng,

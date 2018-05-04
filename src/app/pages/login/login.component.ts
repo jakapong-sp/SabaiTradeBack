@@ -1,4 +1,7 @@
 import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { PagesService } from '../pages.service';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -13,13 +16,19 @@ export class LoginComponent implements OnInit, OnDestroy {
     private sidebarVisible: boolean;
     private nativeElement: Node;
 
-    constructor(private element: ElementRef) {
+    loginForm: FormGroup;
+    loginFeedback: any;
+    profile: any;
+    isLogin: boolean;
+    isError: boolean;
+
+    constructor(private element: ElementRef, private router: Router, private ps: PagesService, private fb: FormBuilder) {
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;
     }
 
     ngOnInit() {
-        var navbar : HTMLElement = this.element.nativeElement;
+        const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
         const body = document.getElementsByTagName('body')[0];
         body.classList.add('login-page');
@@ -29,12 +38,20 @@ export class LoginComponent implements OnInit, OnDestroy {
             // after 1000 ms we add the class animated to the login/register card
             card.classList.remove('card-hidden');
         }, 700);
+
+        this.buildForm();
+        this.isError = false;
+        const profile = localStorage.getItem('profileBackend');
+        if (profile) {
+            this.isLogin = true;
+            this.profile = JSON.parse(profile);
+        }
     }
     sidebarToggle() {
-        var toggleButton = this.toggleButton;
-        var body = document.getElementsByTagName('body')[0];
-        var sidebar = document.getElementsByClassName('navbar-collapse')[0];
-        if (this.sidebarVisible == false) {
+        const toggleButton = this.toggleButton;
+        const body = document.getElementsByTagName('body')[0];
+        const sidebar = document.getElementsByClassName('navbar-collapse')[0];
+        if (this.sidebarVisible === false) {
             setTimeout(function() {
                 toggleButton.classList.add('toggled');
             }, 500);
@@ -46,9 +63,42 @@ export class LoginComponent implements OnInit, OnDestroy {
             body.classList.remove('nav-open');
         }
     }
-    ngOnDestroy(){
+    ngOnDestroy() {
       const body = document.getElementsByTagName('body')[0];
       body.classList.remove('login-page');
       body.classList.remove('off-canvas-sidebar');
     }
+
+    buildForm(): void {
+        this.loginForm = new FormGroup({
+            email: new FormControl('', [
+                Validators.required,
+                Validators.email
+            ]),
+            password: new FormControl('', [
+                Validators.pattern('^(?=.*[0–9])(?=.*[a-zA-Z])([a-zA-Z0–9]+)$'),
+                Validators.minLength(6),
+                Validators.maxLength(25)
+            ])
+        });
+    }
+
+    login(): void {
+        this.ps.getLogin(this.loginForm.value.email, this.loginForm.value.password).subscribe(member => {
+            // debugger;
+            if (member === null) {
+                this.isError = true;
+            } else {
+                const data = {
+                    userid: member.memberRef,
+                    memberref: member.memberRef,
+                    email: member.email
+                };
+                localStorage.setItem('profileBackend', JSON.stringify(data));
+                localStorage.setItem('loginedBackend', 'true');
+                this.router.navigate(['/dashboard']);
+            }
+        });
+    }
+
 }

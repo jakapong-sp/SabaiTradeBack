@@ -4,5 +4,9 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  url_feed: 'http://localhost:9123/signalr',
+  url_static_api: 'http://localhost:5000',
+  node_static_url: 'http://localhost:3000'
 };

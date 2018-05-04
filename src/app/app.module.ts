@@ -50,6 +50,10 @@ import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 
 import { AppRoutes } from './app.routing';
 
+// my add
+import { PagesService } from './pages/pages.service';
+import { DepositsComponent } from './deposits/deposits.component';
+
 @NgModule({
   exports: [
     MatAutocompleteModule,
@@ -83,7 +87,8 @@ import { AppRoutes } from './app.routing';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule
-  ]
+  ],
+  declarations: [DepositsComponent]
 })
 export class MaterialModule {}
 
@@ -106,6 +111,7 @@ export class MaterialModule {}
         AdminLayoutComponent,
         AuthLayoutComponent
     ],
-    bootstrap:    [ AppComponent ]
+    providers: [ PagesService ],
+    bootstrap: [ AppComponent ]
 })
 export class AppModule { }

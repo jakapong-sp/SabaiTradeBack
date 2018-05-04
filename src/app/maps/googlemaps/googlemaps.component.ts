@@ -9,7 +9,7 @@ declare const google: any;
 
 export class GoogleMapsComponent implements OnInit {
     ngOnInit() {
-        let myLatlng = new google.maps.LatLng(40.748817, -73.985428);
+        let myLatlng = new google.maps.LatLng(13.667837, 100.558402);
         const mapOptions = {
             zoom: 8,
             center: myLatlng,
@@ -27,7 +27,7 @@ export class GoogleMapsComponent implements OnInit {
 
 
         // Custom Skin & Settings Map
-        myLatlng = new google.maps.LatLng(40.748817, -73.985428);
+        myLatlng = new google.maps.LatLng(13.667837, 100.558402);
         const mapOptions1 = {
             zoom: 13,
             center: myLatlng,
@@ -62,7 +62,7 @@ export class GoogleMapsComponent implements OnInit {
         marker.setMap(map);
 
         // Satellite Map
-        myLatlng = new google.maps.LatLng(40.748817, -73.985428);
+        myLatlng = new google.maps.LatLng(13.667837, 100.558402);
         const mapOptions2 = {
             zoom: 3,
             scrollwheel: false, // we disable de scroll over the map, it is a really annoing when you scroll through page
