@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
+import { DepositsComponent } from './deposits.component';
 import { SecuredRouteGuard } from '../secured-route.guard';
-import { DashboardComponent } from './dashboard.component';
 
-export const DashboardRoutes: Routes = [
+export const DepositsRoutes: Routes = [
     {
 
       path: '',
       children: [ {
-        path: 'dashboard',
-        component: DashboardComponent,
+        path: '',
+        component: DepositsComponent,
         canActivate: [SecuredRouteGuard]
     }]
 }

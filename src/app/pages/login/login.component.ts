@@ -84,15 +84,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     login(): void {
-        this.ps.getLogin(this.loginForm.value.email, this.loginForm.value.password).subscribe(member => {
-            // debugger;
-            if (member === null) {
+        this.ps.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(user => {
+            if (user === null) {
                 this.isError = true;
             } else {
                 const data = {
-                    userid: member.memberRef,
-                    memberref: member.memberRef,
-                    email: member.email
+                    userid: user._id,
+                    username: user.UserRef,
+                    email: user.Email,
+                    role: user.Role
                 };
                 localStorage.setItem('profileBackend', JSON.stringify(data));
                 localStorage.setItem('loginedBackend', 'true');

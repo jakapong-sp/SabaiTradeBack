@@ -16,6 +16,12 @@ export const AppRoutes: Routes = [
         path: '',
         loadChildren: './dashboard/dashboard.module#DashboardModule'
     }, {
+        path: 'deposits',
+        loadChildren: './deposits/deposits.module#DepositsModule'
+    }, {
+        path: 'withdrawals',
+        loadChildren: './withdrawals/withdrawals.module#WithdrawalsModule'
+    }, {
         path: 'components',
         loadChildren: './components/components.module#ComponentsModule'
     }, {

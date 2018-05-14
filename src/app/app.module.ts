@@ -53,6 +53,9 @@ import { AppRoutes } from './app.routing';
 // my add
 import { PagesService } from './pages/pages.service';
 import { DepositsComponent } from './deposits/deposits.component';
+import { SecuredRouteGuard } from './secured-route.guard';
+import { WithdrawalsComponent } from './withdrawals/withdrawals.component';
+import { ServerService } from './server.service';
 
 @NgModule({
   exports: [
@@ -87,8 +90,7 @@ import { DepositsComponent } from './deposits/deposits.component';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule
-  ],
-  declarations: [DepositsComponent]
+  ]
 })
 export class MaterialModule {}
 
@@ -111,7 +113,7 @@ export class MaterialModule {}
         AdminLayoutComponent,
         AuthLayoutComponent
     ],
-    providers: [ PagesService ],
+    providers: [ SecuredRouteGuard, PagesService, ServerService ],
     bootstrap: [ AppComponent ]
 })
 export class AppModule { }

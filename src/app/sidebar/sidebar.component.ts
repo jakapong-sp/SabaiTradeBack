@@ -36,10 +36,22 @@ export const ROUTES: RouteInfo[] = [
         icontype: 'content_paste'
     },
     {
-        path: '/withdraw',
-        title: 'Withdraw',
+        path: '/withdrawals',
+        title: 'withdrawals',
         type: 'link',
         icontype: 'pages'
+    },
+    {
+        path: '/deposits',
+        title: 'makers',
+        type: 'sub',
+        icontype: 'grid_on',
+        collapse: 'makers',
+        children: [
+            {path: 'deposits', title: 'makers', ab: 'RT'},
+            {path: 'extended', title: 'Extended Tables', ab: 'ET'},
+            {path: 'datatables.net', title: 'Datatables.net', ab: 'DT'}
+        ]
     },
     // {
     //     path: '/dashboard',
@@ -73,18 +85,20 @@ export const ROUTES: RouteInfo[] = [
     //         {path: 'validation', title: 'Validation Forms', ab:'VF'},
     //         {path: 'wizard', title: 'Wizard', ab:'W'}
     //     ]
-    // },{
-    //     path: '/tables',
-    //     title: 'Tables',
-    //     type: 'sub',
-    //     icontype: 'grid_on',
-    //     collapse: 'tables',
-    //     children: [
-    //         {path: 'regular', title: 'Regular Tables', ab:'RT'},
-    //         {path: 'extended', title: 'Extended Tables', ab:'ET'},
-    //         {path: 'datatables.net', title: 'Datatables.net', ab:'DT'}
-    //     ]
-    // },{
+    // },
+    {
+        path: '/tables',
+        title: 'Tables',
+        type: 'sub',
+        icontype: 'grid_on',
+        collapse: 'tables',
+        children: [
+            {path: 'regular', title: 'Regular Tables', ab:'RT'},
+            {path: 'extended', title: 'Extended Tables', ab:'ET'},
+            {path: 'datatables.net', title: 'Datatables.net', ab:'DT'}
+        ]
+    },
+    // {
     //     path: '/maps',
     //     title: 'Maps',
     //     type: 'sub',
@@ -153,7 +167,7 @@ export class SidebarComponent implements OnInit {
     updatePS(): void {
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
             const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
-            let ps = new PerfectScrollbar(elemSidebar, { wheelSpeed: 2, suppressScrollX: true });
+            const ps = new PerfectScrollbar(elemSidebar, { wheelSpeed: 2, suppressScrollX: true });
         }
     }
     isMac(): boolean {
