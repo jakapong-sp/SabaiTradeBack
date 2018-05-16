@@ -12,7 +12,7 @@ declare var swal: any;
 @Injectable()
 export class PagesService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
-  private baseUrl = `http://localhost:3000/`;
+  private baseUrl = environment.node_static_url + '/';
   private loginUrl = `${this.baseUrl}api/login`;
   private logoutUrl = `${this.baseUrl}api/logout`;
   constructor(private http: Http, private router: Router) { }
@@ -21,7 +21,7 @@ export class PagesService {
     const headerOptions = new Headers({ 'Content-Type': 'application/json' });
     const requestOptions = new RequestOptions({ method: RequestMethod.Get, headers: headerOptions });
     return this.http
-      .get(environment.url_static_api + '/api/members/login|' + email + '|' + password, requestOptions).map(x => x.json());
+      .get(environment.node_static_url + '/api/members/login|' + email + '|' + password, requestOptions).map(x => x.json());
   }
 
   login(username: string, password: string) {
@@ -45,7 +45,7 @@ export class PagesService {
     const headerOptions = new Headers({ 'Content-Type': 'application/json' });
     const requestOptions = new RequestOptions({method: RequestMethod.Get, headers: headerOptions});
     return this.http
-      .get(environment.url_static_api + '/api/members/', requestOptions)
+      .get(environment.node_static_url + '/api/members/', requestOptions)
       .map(res => res.json());
   }
 

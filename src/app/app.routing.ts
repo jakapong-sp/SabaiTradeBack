@@ -48,6 +48,12 @@ export const AppRoutes: Routes = [
     }, {
         path: '',
         loadChildren: './timeline/timeline.module#TimelineModule'
+    }, {
+        path: 'makers',
+        loadChildren: './makers/makers.module#MakersModule'
+    }, {
+        path: 'checkers',
+        loadChildren: './checkers/checkers.module#CheckersModule'
     }
   ]}, {
       path: '',

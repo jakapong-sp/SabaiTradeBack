@@ -38,7 +38,7 @@ router.get('/asset/', function (req, res) {
                             from: 'Members',
                             localField: 'MemberRef',
                             foreignField: 'MemberRef',
-                            as: 'mem'
+                            as: 'MemberLookup'
                         }
                 }
                 , { $sort: { CreateDate: 1 } },
@@ -58,6 +58,37 @@ router.get('/asset/', function (req, res) {
     });
 });
 
+router.get('/assetchecker/', function (req, res) {
+    mongoClient.connect(mongo_string, function (err, client) {
+        if (err) throw err;
+        var db = client.db(mongo_db_name);
+        db.collection('Assets')
+            .aggregate([
+                {
+                    $lookup:
+                        {
+                            from: 'Members',
+                            localField: 'MemberRef',
+                            foreignField: 'MemberRef',
+                            as: 'MemberLookup'
+                        }
+                }
+                , { $sort: { CreateDate: 1 } },
+                {
+                    $match:{
+                       "Active": true,
+                       "Status": 'Approve1'
+                    }
+                 }
+            ])
+            //.find({ Active: true, Status: null })
+            .toArray(function (findErr, result) {
+                if (findErr) throw findErr;
+                res.json(result);
+                client.close();
+            });
+    });
+});
 // Approve
 // router.put('/asset1', function (req, res) {
 //     var query = { AssetRef: '61031200001' };

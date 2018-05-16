@@ -29,28 +29,36 @@ export const ROUTES: RouteInfo[] = [
         type: 'link',
         icontype: 'dashboard'
     },
+    // {
+    //     path: '/deposits',
+    //     title: 'Deposits',
+    //     type: 'link',
+    //     icontype: 'content_paste'
+    // },
+    // {
+    //     path: '/withdrawals',
+    //     title: 'withdrawals',
+    //     type: 'link',
+    //     icontype: 'pages'
+    // },
     {
-        path: '/deposits',
-        title: 'Deposits',
-        type: 'link',
-        icontype: 'content_paste'
-    },
-    {
-        path: '/withdrawals',
-        title: 'withdrawals',
-        type: 'link',
-        icontype: 'pages'
-    },
-    {
-        path: '/deposits',
+        path: '/makers',
         title: 'makers',
         type: 'sub',
         icontype: 'grid_on',
         collapse: 'makers',
         children: [
-            {path: 'deposits', title: 'makers', ab: 'RT'},
-            {path: 'extended', title: 'Extended Tables', ab: 'ET'},
-            {path: 'datatables.net', title: 'Datatables.net', ab: 'DT'}
+            {path: 'depwith', title: 'deposit withdrawal list', ab: 'DW'}
+        ]
+    },
+    {
+        path: '/checkers',
+        title: 'checkers',
+        type: 'sub',
+        icontype: 'grid_on',
+        collapse: 'checkers',
+        children: [
+            {path: 'checker-approves', title: 'deposit withdrawal list', ab: 'DW'}
         ]
     },
     // {
@@ -86,18 +94,18 @@ export const ROUTES: RouteInfo[] = [
     //         {path: 'wizard', title: 'Wizard', ab:'W'}
     //     ]
     // },
-    {
-        path: '/tables',
-        title: 'Tables',
-        type: 'sub',
-        icontype: 'grid_on',
-        collapse: 'tables',
-        children: [
-            {path: 'regular', title: 'Regular Tables', ab:'RT'},
-            {path: 'extended', title: 'Extended Tables', ab:'ET'},
-            {path: 'datatables.net', title: 'Datatables.net', ab:'DT'}
-        ]
-    },
+    // {
+    //     path: '/tables',
+    //     title: 'Tables',
+    //     type: 'sub',
+    //     icontype: 'grid_on',
+    //     collapse: 'tables',
+    //     children: [
+    //         {path: 'regular', title: 'Regular Tables', ab: 'RT'},
+    //         {path: 'extended', title: 'Extended Tables', ab: 'ET'},
+    //         {path: 'datatables.net', title: 'Datatables.net', ab: 'DT'}
+    //     ]
+    // },
     // {
     //     path: '/maps',
     //     title: 'Maps',

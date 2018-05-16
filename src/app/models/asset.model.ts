@@ -1,5 +1,4 @@
 import { Member } from './member';
-
 export class Asset {
     MemberRef: string;
     AssetRef: string;
@@ -9,5 +8,9 @@ export class Asset {
     Status: string;
     CreateDate: Date;
     CreateBy: string;
-    mem: Member;
+    Approve1Date: Date;
+    Approve1By: string;
+    Approve2Date: Date;
+    Approve2By: string;
+    MemberLookup: Member;
 }

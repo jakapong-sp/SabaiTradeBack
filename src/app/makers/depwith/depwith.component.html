@@ -1,0 +1,96 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">assignment</i>
+            </div>
+            <h4 class="card-title">Deposits</h4>
+          </div>
+          <div class="card-body">
+            <div class="toolbar">
+              <!--        Here you can write extra buttons/actions for the toolbar              -->
+            </div>
+            <div class="material-datatables">
+              <table id="datatables" class="table table-hover">
+                <thead class="text-primary">
+                  <tr>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[0] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[1] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[2] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[3] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[4] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[5] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[6] }}</th>
+                  </tr>
+                </thead>
+                <tbody style="height:18px">
+                  <tr *ngFor="let item of assetArray | async">
+                    <td>{{ item.AssetRef }}</td>
+                    <td>{{ item.MemberLookup[0].FirstName }}</td>
+                    <td>{{ item.CreateDate | date: 'yy.MM.dd hh:mm:ss' }}</td>
+                    <td>
+                      <ng-container *ngIf="item.AssetType=='Deposit' then depo else with"></ng-container>
+                      <ng-template #depo>
+                        <span class='text-info'><strong>{{ item.AssetType }}</strong></span>
+                      </ng-template>
+                      <ng-template #with>
+                        <span class='text-danger' ><strong>{{ item.AssetType }}</strong></span>
+                      </ng-template>
+                    </td>
+                    <td>{{ item.CreateBy }}</td>
+                    <td>${{ item.Amount | number : '1.0-2' }}</td>
+                    <td>
+                      <ng-container *ngIf="item.Approve1By==null then wait else approved"></ng-container>
+                      <ng-template #wait>
+                        <span>
+                          <a href="#" title="Approve #{{ item.AssetRef }}" data-toggle="modal" (click)="assetAppSelect=item" class='text-warning' data-target="#noticeModalApprove">
+                              <strong>Wait</strong>
+                          </a>
+                        </span>
+                      </ng-template>
+                      <ng-template #approved>
+                        <span class='text-success'><strong>Approved</strong></span>
+                      </ng-template>
+                    </td>
+                    <!-- <td class="text-right" style="font-size:5px">
+                      <a href="#" class="btn btn-link btn-primary btn-just-icon like" title="Approve #{{ item.AssetRef }}" data-toggle="modal">
+                        <i class="material-icons" (click)="onApprove(item)">description</i>
+                      </a>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+              <div class="modal fade" id="noticeModalApprove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-notice">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <i class="material-icons">clear</i>
+                      </button>
+                      <h3 class="modal-title" id="myModalLabel">Do you want to approve?</h3>
+                    </div>
+                    <div class="modal-body">
+                      <div class="instruction" style="font-size:20px">
+                        <p *ngIf="assetAppSelect != null">
+                          Approve #{{ assetAppSelect[0] }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="text-center">
+                        <button type="button" class="btn btn-primary btn-lg" data-dismiss="modal" (click)="onApprove(assetAppSelect)">Approve</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
