@@ -3,7 +3,7 @@ export class Member {
     memberRef: string;
     password: string;
     memberName: string;
-    firstName: string;
+    FirstName: string;
     lastName: string;
     address: string;
     email: string;

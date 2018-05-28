@@ -7,13 +7,19 @@
             <div class="card-icon">
               <i class="material-icons">assignment</i>
             </div>
-            <h4 class="card-title">Deposits</h4>
+            <h4 class="card-title">Deposit Withdrawal List</h4>
           </div>
           <div class="card-body">
-            <div class="toolbar">
-              <!--        Here you can write extra buttons/actions for the toolbar              -->
+            <div class="toolbar text-right">
+              <input type="text" #search (keyup)="onSearch(search.value)" class="form-control2 col-md-2" placeholder="Search">
             </div>
-            <div class="material-datatables">
+            <div *ngIf="isLoading" class="text-center">
+              <img src="../../../assets/img/loading.gif">
+            </div>
+            <div *ngIf="this.errorMsg != ''" class="category form-category text-center text-rose">
+              
+            </div>
+            <div *ngIf="!isLoading" class="material-datatables">
               <table id="datatables" class="table table-hover">
                 <thead class="text-primary">
                   <tr>
@@ -24,10 +30,11 @@
                     <th style="font-weight:bold">{{ dataTable.headerRow[4] }}</th>
                     <th style="font-weight:bold">{{ dataTable.headerRow[5] }}</th>
                     <th style="font-weight:bold">{{ dataTable.headerRow[6] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[7] }}</th>
                   </tr>
                 </thead>
                 <tbody style="height:18px">
-                  <tr *ngFor="let item of assetArray | async">
+                  <tr *ngFor="let item of assetList">
                     <td>{{ item.AssetRef }}</td>
                     <td>{{ item.MemberLookup[0].FirstName }}</td>
                     <td>{{ item.CreateDate | date: 'yy.MM.dd hh:mm:ss' }}</td>
@@ -41,9 +48,13 @@
                       </ng-template>
                     </td>
                     <td>{{ item.CreateBy }}</td>
-                    <td>${{ item.Amount | number : '1.0-2' }}</td>
+                    <td>{{ item.AmountRequest | number : '1.0-2' }}</td>
+                    <td>{{ item.Amount | number : '1.0-2' }}</td>
                     <td>
-                      <ng-container *ngIf="item.Approve2By==null then wait else approved"></ng-container>
+                      <!-- <ng-container *ngIf="item.Approve2By==null then wait else approved"></ng-container> -->
+                      <ng-container *ngIf="item.Status=='Approve1' then wait"></ng-container>
+                      <ng-container *ngIf="item.Status=='DisApprove' then dis"></ng-container>
+                      <ng-container *ngIf="item.Status=='Approve2' then approved"></ng-container>
                       <ng-template #wait>
                         <span>
                           <a href="#" title="Approve #{{ item.AssetRef }}" data-toggle="modal" (click)="assetAppSelect=item" class='text-warning' data-target="#noticeModalApprove">
@@ -51,17 +62,23 @@
                           </a>
                         </span>
                       </ng-template>
+                      <ng-template #dis>
+                        <span>
+                          <span class='text-danger'><strong>DisApproved</strong></span>
+                        </span>
+                      </ng-template>
                       <ng-template #approved>
                         <span class='text-success'><strong>Approved</strong></span>
                       </ng-template>
                     </td>
-                    <!-- <td class="text-right" style="font-size:5px">
-                      <a href="#" class="btn btn-link btn-primary btn-just-icon like" title="Approve #{{ item.AssetRef }}" data-toggle="modal">
-                        <i class="material-icons" (click)="onApprove(item)">description</i>
-                      </a>
-                    </td> -->
                   </tr>
                 </tbody>
+                <tfoot>
+                  <tr style='background-color:silver;font-size:18px'>
+                    <th colspan='8'>Deposit : {{ this.totalDep | number : '1.0-2'}} | Withdrawal : {{ this.totalWith | number : '1.0-2'}}
+                      | Total : {{ (this.totalDep - this.totalWith) | number : '1.0-2'}}</th>
+                  </tr>
+                </tfoot>
               </table>
               <div class="modal fade" id="noticeModalApprove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-notice">
@@ -73,15 +90,22 @@
                       <h3 class="modal-title" id="myModalLabel">Do you want to approve?</h3>
                     </div>
                     <div class="modal-body">
-                      <div class="instruction" style="font-size:20px">
+                      <div class="instruction text-center" style="font-size:18px">
                         <p *ngIf="assetAppSelect != null">
-                          Approve #{{ assetAppSelect[0] }}
+                          Ref #{{ assetAppSelect.AssetRef }}
                         </p>
+                      </div>
+                      <div class="form-group label-floating">
+                          <!-- <label class="control-label">Approve</label> -->
+                          <select #selectApproveType class="form-control">
+                              <option value="Approve2" class="text-success">Approve</option>
+                              <option value="DisApprove" class="text-danger">DisApprove</option>
+                          </select>
                       </div>
                     </div>
                     <div class="modal-footer">
                       <div class="text-center">
-                        <button type="button" class="btn btn-primary btn-lg" data-dismiss="modal" (click)="onApprove(assetAppSelect)">Approve</button>
+                        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onApprove(assetAppSelect,selectApproveType.value)">Submit</button>
                       </div>
                     </div>
                   </div>

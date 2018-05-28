@@ -8,7 +8,7 @@ const cors = require('cors')
 // Allow client to access cross domain or ip-address
 app.use(function (req, res, next) {
     //res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200'); // if use upload image must fix url ให้รู้จักก่อน
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4201'); // if use upload image must fix url ให้รู้จักก่อน
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -28,7 +28,7 @@ app.use(function (req, res, next) {
     res.sendFile(path.join(__dirname, './../dist/index.html'));
   });
   
-  var server = app.listen('3000', () => {
+  var server = app.listen('3001', () => {
     console.log("Server is running");
   
   })

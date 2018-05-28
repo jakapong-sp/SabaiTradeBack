@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServerService } from '../../server.service';
 import { environment } from '../../../environments/environment';
 import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
@@ -17,10 +17,10 @@ declare interface DataTable {
 declare const $: any;
 
 @Component({
-  selector: 'app-depwith',
-  templateUrl: './depwith.component.html'
+  selector: 'app-maker-approves',
+  templateUrl: './maker-approves.component.html'
 })
-export class DepwithComponent implements OnInit {
+export class MakerApprovesComponent implements OnInit {
   public dataTable: DataTable;
   public assetList: Array<Asset>;
   public assetApprove: Asset[];

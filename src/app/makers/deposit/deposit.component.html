@@ -1,0 +1,55 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-primary card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">assignment</i>
+              </div>
+              <h4 class="card-title">Deposits</h4>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal" #depositForm="ngForm" (ngSubmit)="OnSubmit(depositForm)">
+                     
+                    <div class="card-content">
+                        <div class="row">
+                            <label class="col-sm-2 label-on-left">Fund Your Account</label>
+                            <div class="col-sm-2">
+                                <div class="form-group label-floating is-empty">
+                                    <label class="control-label" data-error="Required field!"></label>
+                                    <input class="form-control validate" style="text-align:center;font-size:30px" type="text" placeholder="Amount" name="AmountRequest"
+                                    #AmountRequest="ngModel" [(ngModel)]="asset.AmountRequest" required autocomplete="off"
+                                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.ctrlKey == true" (keyup)="asset.AmountRequest=setFormatCurrency(AmountRequest.value)">
+                                    <!-- <span class="help-block">minimum 1000 $</span> 
+                                     (keyup)="onKeyup($event)"
+                                    -->
+                                </div>
+                            </div>
+                            <label class="col-sm-1 label-on-right">USD</label>
+                        </div>
+                        <!-- <div class="row">
+                            <label class="col-sm-2 label-on-left"></label>
+                            <div class="col-sm-8">
+                                <div class="form-group label-floating is-empty">
+                                    <input class="form-control validate" type="text" placeholder="Amount" name="amountRequest" #amountRequest="ngModel" [(ngModel)]="asset.amountRequest" required>
+                                    <label data-error="Required field!"></label>
+                                    <span class="help-block">A block of help text that breaks onto a new line.</span>
+                                </div>
+                            </div>
+                        </div> -->
+                        <br>
+                        <div class="row">
+                            <label class="col-sm-2 label-on-left"></label>
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-fill btn-info" [disabled]="!depositForm.valid">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

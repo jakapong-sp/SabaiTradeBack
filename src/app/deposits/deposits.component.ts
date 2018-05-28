@@ -52,9 +52,9 @@ export class DepositsComponent implements OnInit, AfterViewInit {
     // });
   }
   onApprove(asset: Asset) {
-    this.server.approveDeposits(asset, '').subscribe((result) => {
-      console.log('Approved: ' + JSON.stringify(result));
-    });
+    // this.server.approveDeposits(asset, '').subscribe((result) => {
+    //   console.log('Approved: ' + JSON.stringify(result));
+    // });
     this.assetArray = this.server.getDeposits();
     return false;
   }

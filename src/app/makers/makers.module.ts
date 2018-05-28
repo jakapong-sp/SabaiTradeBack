@@ -6,6 +6,8 @@ import { MakersRoutes } from './makers.routing';
 import { FormsModule } from '@angular/forms';
 import { environment } from 'environments/environment';
 import { DepwithComponent } from './depwith/depwith.component';
+import { DepositComponent } from './deposit/deposit.component';
+import { MakerApprovesComponent } from './maker-approves/maker-approves.component';
 
 @NgModule({
     imports: [
@@ -14,7 +16,7 @@ import { DepwithComponent } from './depwith/depwith.component';
         MaterialModule,
         FormsModule
     ],
-    declarations: [DepwithComponent]
+    declarations: [DepwithComponent, DepositComponent, MakerApprovesComponent]
 })
 
 export class MakersModule {}

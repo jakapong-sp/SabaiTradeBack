@@ -13,4 +13,5 @@ export class Asset {
     Approve2Date: Date;
     Approve2By: string;
     MemberLookup: Member;
+    Note: string;
 }
