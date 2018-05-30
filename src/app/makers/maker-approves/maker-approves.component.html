@@ -9,9 +9,11 @@
             </div>
             <h4 class="card-title">Deposit Withdrawal List</h4>
           </div>
+
           <div class="card-body">
-            <div class="toolbar text-right">
-              <input type="text" #search (keyup)="onSearch(search.value)" class="form-control2 col-md-2" placeholder="Search">
+            <div class="col-md-10"></div>
+            <div class="toolbar col-md-3 float-md-right">
+              <input type="text" #search (keyup)="onSearch(search.value)" class="form-control" placeholder="Search">
             </div>
             <div *ngIf="isLoading" class="text-center">
               <img src="../../../assets/img/loading.gif">
@@ -36,7 +38,7 @@
                 <tbody style="height:18px">
                   <tr *ngFor="let item of assetList">
                     <td>{{ item.AssetRef }}</td>
-                    <td>{{ item.MemberLookup[0].FirstName }}</td>
+                    <td>{{ item.MemberLookup[0]?.FirstName }}</td>
                     <td>{{ item.CreateDate | date: 'yy.MM.dd hh:mm:ss' }}</td>
                     <td>
                       <ng-container *ngIf="item.AssetType=='Deposit' then depo else with"></ng-container>
@@ -51,7 +53,6 @@
                         </span>
                       </ng-template>
                     </td>
-                    <td>{{ item.CreateBy }}</td>
                     <td>{{ item.AmountRequest | number : '1.0-2' }}</td>
                     <td>{{ item.Amount | number : '1.0-2' }}</td>
                     <td>

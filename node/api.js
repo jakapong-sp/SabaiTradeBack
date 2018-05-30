@@ -138,6 +138,41 @@ router.put('/assetmaker', function (req, res) {
     });
 });
 
+router.post('/asset', function (req, res) {
+    mongoClient.connect(mongo_string, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db(mongo_db_name);
+        console.log(req.body);
+        // dbo.collection("Assets").find({Active: true}).count(function(err,count){
+        //     console.log(count);
+        // });
+        autoIncrement.getNextSequence(dbo, 'Assets', function (err, autoIndex) {
+            req.body.AssetRef = 'DW' + refnumber(autoIndex, 5);
+            req.body.MemberRef = req.body.MemberRef;
+            req.body.AssetType = req.body.AssetType;
+            req.body.Amount = null;
+            req.body.AmountRequest = req.body.AmountRequest;
+            req.body.Status = null;
+            req.body.Approve1Date = null;
+            req.body.Approve1By = null;
+            req.body.Approve2Date = null;
+            req.body.Approve2By = null;
+            req.body.Active = true;
+            req.body.CreateDate = new Date();
+            req.body.CreateBy = req.body.CreateBy;
+            dbo.collection("Assets").insertOne(req.body, function (err, result) {
+                if (err) throw err;
+                console.log("1 document inserted (Assets Deposit)");
+                const response = { result: "ok", message: result.result.n + " Updated" };
+                res.json(response);
+                console.log(req.body);
+                db.close();
+            });
+        });
+    });
+});
+
+
 // Asset Checker
 router.get('/assetchecker/', function (req, res) {
     mongoClient.connect(mongo_string, function (err, client) {
@@ -229,6 +264,112 @@ router.put('/assetchecker', function (req, res) {
 
 // #endregion
 
+// #region Orders
+
+router.get('/orders/', function (req, res) {
+    mongoClient.connect(mongo_string, function (err, client) {
+        if (err) throw err;
+        var db = client.db(mongo_db_name);
+        db.collection('Orders')
+            .aggregate([
+                {
+                    $lookup:
+                        {
+                            from: 'Members',
+                            localField: 'MemberRef',
+                            foreignField: 'MemberRef',
+                            as: 'MemberLookup'
+                        }
+                }
+                , { $sort: { CreateDate: 1 } },
+                {
+                    $match: {
+                        "Active": true
+                        // ,Status: { $ne: null }
+                    }
+                }
+            ])
+            .toArray(function (findErr, result) {
+                if (findErr) throw findErr;
+                res.json(result);
+                client.close();
+            });
+    });
+});
+
+// #endregion
+
+// #region Accounts
+router.get('/assetdepositaccount/', function (req, res) {
+    mongoClient.connect(mongo_string, function (err, client) {
+        if (err) throw err;
+        var db = client.db(mongo_db_name);
+        db.collection('Assets')
+            .aggregate([
+                {
+                    $lookup:
+                        {
+                            from: 'Members',
+                            localField: 'MemberRef',
+                            foreignField: 'MemberRef',
+                            as: 'MemberLookup'
+                        }
+                }
+                , { $sort: { CreateDate: 1 } },
+                {
+                    $match: {
+                        Active: true,
+                        AssetType: 'Deposit',
+                        Status: 'Approve2'
+                    }
+                }
+            ])
+            //.find({ Active: true, Status: null })
+            .toArray(function (findErr, result) {
+                if (findErr) throw findErr;
+                res.json(result);
+                client.close();
+            });
+    });
+});
+
+router.get('/assetwithdrawaccount/', function (req, res) {
+    mongoClient.connect(mongo_string, function (err, client) {
+        if (err) throw err;
+        var db = client.db(mongo_db_name);
+        db.collection('Assets')
+            .aggregate([
+                {
+                    $lookup:
+                        {
+                            from: 'Members',
+                            localField: 'MemberRef',
+                            foreignField: 'MemberRef',
+                            as: 'MemberLookup'
+                        }
+                }
+                , { $sort: { CreateDate: 1 } },
+                {
+                    $match: {
+                        Active: true,
+                        AssetType: 'Withdraw',
+                        Status: 'Approve2'
+                    }
+                }
+            ])
+            //.find({ Active: true, Status: null })
+            .toArray(function (findErr, result) {
+                if (findErr) throw findErr;
+                res.json(result);
+                client.close();
+            });
+    });
+});
+
+// #endregion
+
+
+
 // #region Function
 
 function refnumber(num, len) {
@@ -237,38 +378,16 @@ function refnumber(num, len) {
 // #endregion 
 
 
-
-router.post('/asset', function (req, res) {
-    mongoClient.connect(mongo_string, function (err, db) {
+router.get('/memberlist/', function (req, res) {
+    mongoClient.connect(mongo_string, function (err, client) {
         if (err) throw err;
-        var dbo = db.db(mongo_db_name);
-        console.log(req.body);
-        // dbo.collection("Assets").find({Active: true}).count(function(err,count){
-        //     console.log(count);
-        // });
-        autoIncrement.getNextSequence(dbo, 'Assets', function (err, autoIndex) {
-            req.body.AssetRef = 'DP' + refnumber(autoIndex, 5);
-            req.body.MemberRef = req.body.MemberRef;
-            req.body.AssetType = req.body.AssetType;
-            req.body.Amount = null;
-            req.body.AmountRequest = req.body.AmountRequest;
-            req.body.Status = null;
-            req.body.Approve1Date = null;
-            req.body.Approve1By = null;
-            req.body.Approve2Date = null;
-            req.body.Approve2By = null;
-            req.body.Active = true;
-            req.body.CreateDate = new Date();
-            req.body.CreateBy = req.body.CreateBy;
-            dbo.collection("Assets").insertOne(req.body, function (err, result) {
-                if (err) throw err;
-                console.log("1 document inserted (Assets Deposit)");
-                const response = { result: "ok", message: result.result.n + " Updated" };
-                res.json(response);
-                console.log(req.body);
-                db.close();
+        var db = client.db(mongo_db_name);
+        db.collection('Members').find({},{MemberRef: 1, FirstName: 1})
+            .toArray(function (findErr, result) {
+                if (findErr) throw findErr;
+                res.json(result);
+                client.close();
             });
-        });
     });
 });
 
@@ -315,6 +434,17 @@ router.post('/login', function (req, res) {
 });
 
 router.post('/logintest', function (req, res) {
+    var response;
+    response = {
+        "email": "jakapong.sp@gmail.com",
+        "username": "jakapong",
+        "text": "login success"
+    };
+    console.log(response);
+    res.json(response);
+});
+
+router.get('/test', function (req, res) {
     var response;
     response = {
         "email": "jakapong.sp@gmail.com",

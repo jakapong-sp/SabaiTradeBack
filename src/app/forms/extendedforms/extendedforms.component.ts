@@ -24,7 +24,7 @@ export class ExtendedFormsComponent implements OnInit {
     selectedValue: string;
     currentCity: string[];
 
-    selectTheme = 'primary';
+    selectTheme = 'info';
     cities = [
       {value: 'paris-0', viewValue: 'Paris'},
       {value: 'miami-1', viewValue: 'Miami'},

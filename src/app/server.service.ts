@@ -10,6 +10,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { environment } from 'environments/environment';
 import { Asset } from './models/asset.model';
+import { Order } from './models/order.model';
+import { Member } from './models/member';
 
 declare interface DataTable {
   headerRow: string[];
@@ -29,6 +31,7 @@ export class ServerService {
   //   private reportUrl = `${this.baseUrl}/api/report`;
 
   private assetUrl = `${this.baseUrl}api/asset`;
+  private orderUrl = `${this.baseUrl}api/asset`;
 
   employeeList: Asset[];
 
@@ -91,9 +94,70 @@ export class ServerService {
       .put(this.baseUrl + 'api/assetmaker', body, requestOptions)
       .map(res => res.json());
   }
+
+  postDepositMaker(asset: Asset) {
+    const memberref = JSON.parse(localStorage.getItem('profileBackend')).username;
+    const body = {
+      MemberRef: asset.MemberRef,
+      AssetType: 'Deposit',
+      AmountRequest: asset.AmountRequest.toString().replace(/[, ]+/g, '').trim(),
+      CreateBy: null
+    };
+    const headerOptions = new Headers({ 'Content-Type': 'application/json' });
+    const requestOptions = new RequestOptions({
+      method: RequestMethod.Post, headers: headerOptions
+    });
+    return this.http
+      .post(this.assetUrl, body, requestOptions)
+      .map(res => res.json());
+  }
+
   // #endregion
 
   // #endregion
+
+  //#region Orders
+
+  //#region Accounts
+
+  getDepositAccount(): Observable<Asset[]> {
+    const body = {};
+    const headerOptions = new Headers({ 'Content-Type': 'application/json' });
+    const requestOptions = new RequestOptions({ method: RequestMethod.Get, headers: headerOptions });
+    return this.http
+      .get(this.baseUrl + 'api/assetdepositaccount', requestOptions)
+      .map(res => res.json());
+  }
+
+  getWithdrawAccount(): Observable<Asset[]> {
+    const body = {};
+    const headerOptions = new Headers({ 'Content-Type': 'application/json' });
+    const requestOptions = new RequestOptions({ method: RequestMethod.Get, headers: headerOptions });
+    return this.http
+      .get(this.baseUrl + 'api/assetwithdrawaccount', requestOptions)
+      .map(res => res.json());
+  }
+  //#endregion
+
+  getOrderList(): Observable<Order[]> {
+    const body = {};
+    const headerOptions = new Headers({ 'Content-Type': 'application/json' });
+    const requestOptions = new RequestOptions({ method: RequestMethod.Get, headers: headerOptions });
+    return this.http
+      .get(this.baseUrl + 'api/orders', requestOptions)
+      .map(res => res.json());
+  }
+
+  //#endregion
+
+  getMemberList(): Observable<Member[]> {
+    const body = {};
+    const headerOptions = new Headers({ 'Content-Type': 'application/json' });
+    const requestOptions = new RequestOptions({ method: RequestMethod.Get, headers: headerOptions });
+    return this.http
+      .get(this.baseUrl + 'api/memberlist', requestOptions)
+      .map(res => res.json());
+  }
 
 
   getAssetList() {
@@ -125,21 +189,5 @@ export class ServerService {
 
 
 
-  postDeposit(asset: Asset) {
-    const memberref = JSON.parse(localStorage.getItem('profileBackend')).username;
-    const body = {
-      MemberRef: memberref,
-      AssetType: 'Deposit',
-      AmountRequest: asset.AmountRequest.toString().replace(/[, ]+/g, '').trim(),
-      CreateBy: memberref
-    };
-    const headerOptions = new Headers({ 'Content-Type': 'application/json' });
-    const requestOptions = new RequestOptions({
-      method: RequestMethod.Post, headers: headerOptions
-    });
-    return this.http
-      .post(this.assetUrl, body, requestOptions)
-      .map(res => res.json());
-  }
 
 }

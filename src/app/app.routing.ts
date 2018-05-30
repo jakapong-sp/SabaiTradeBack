@@ -54,6 +54,12 @@ export const AppRoutes: Routes = [
     }, {
         path: 'checkers',
         loadChildren: './checkers/checkers.module#CheckersModule'
+    }, {
+        path: 'traders',
+        loadChildren: './traders/traders.module#TradersModule'
+    }, {
+        path: 'accounts',
+        loadChildren: './accounts/accounts.module#AccountsModule'
     }
   ]}, {
       path: '',

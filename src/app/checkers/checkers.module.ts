@@ -16,4 +16,4 @@ import { CheckerApprovesComponent } from './checker-approves/checker-approves.co
   ],
   declarations: [CheckerApprovesComponent]
 })
-export class CheckersModule { }
+export class CheckersModule {}

@@ -1,0 +1,85 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-primary card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">assignment</i>
+              </div>
+              <h4 class="card-title">Orders List</h4>
+            </div>
+  
+            <div class="card-body">
+              <div class="toolbar col-md-2 float-md-right">
+                <input type="text" #search (keyup)="onSearch(search.value)" class="form-control" placeholder="Search FirstName">
+              </div>
+              <div *ngIf="isLoading" class="text-center">
+                <img src="../../../assets/img/loading.gif">
+              </div>
+              <div *ngIf="this.errorMsg != ''" class="category form-category text-center text-rose">
+                
+              </div>
+              <div *ngIf="!isLoading" class="material-datatables">
+                <table id="datatables" class="table table-hover">
+                  <thead class="text-primary">
+                    <tr>
+                      <th style="font-weight:bold">{{ dataTable.headerRow[0] }}</th>
+                      <th style="font-weight:bold">{{ dataTable.headerRow[1] }}</th>
+                      <th style="font-weight:bold">{{ dataTable.headerRow[2] }}</th>
+                      <th style="font-weight:bold">{{ dataTable.headerRow[3] }}</th>
+                      <th style="font-weight:bold">{{ dataTable.headerRow[4] }}</th>
+                      <th style="font-weight:bold">{{ dataTable.headerRow[5] }}</th>
+                      <th style="font-weight:bold">{{ dataTable.headerRow[6] }}</th>
+                      <th style="font-weight:bold">{{ dataTable.headerRow[7] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody style="height:18px">
+                    <tr *ngFor="let item of orderList">
+                      <td>{{ item.OrderRef }}</td>
+                      <td>{{ item.MemberLookup[0].FirstName }}</td>
+                      <td>{{ item.CreateDate | date: 'yy.MM.dd hh:mm:ss' }}</td>
+                      <td>
+                        <ng-container *ngIf="item.Type=='Buy' then buy else sell"></ng-container>
+                        <ng-template #buy>
+                          <span class='text-info'>
+                            <strong>{{ item.Type }}</strong>
+                          </span>
+                        </ng-template>
+                        <ng-template #sell>
+                          <span class='text-danger'>
+                            <strong>{{ item.Type }}</strong>
+                          </span>
+                        </ng-template>
+                      </td>
+                      <td>{{ item.Size | number : '1.0-2'}}</td>
+                      <td>{{ item.Price | number : '1.0-2' }}</td>
+                      <td>{{ item.Profit | number : '1.0-2' }}</td>
+                      <td>
+                          <ng-container *ngIf="item.Status=='Pending' then pending else close"></ng-container>
+                          <ng-template #pending>
+                            <span class='text-warning'>
+                              <strong>{{ item.Status }}</strong>
+                            </span>
+                          </ng-template>
+                          <ng-template #close>
+                            <span class='text-success'>
+                              <strong>{{ item.Status }}</strong>
+                            </span>
+                          </ng-template>
+                        </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr style='background-color:silver;font-size:18px'>
+                      <th colspan='9'>Total Profit : {{ this.totalProfit | number : '1.0-2'}}</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

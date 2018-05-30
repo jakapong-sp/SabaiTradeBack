@@ -7,7 +7,8 @@ export const CheckersRoutes: Routes = [
       path: '',
       children: [ {
         path: 'checker-approves',
-        component: CheckerApprovesComponent
+        component: CheckerApprovesComponent,
+        canActivate: [SecuredRouteGuard]
     }]
 }
 ];

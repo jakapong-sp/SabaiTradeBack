@@ -6,6 +6,7 @@ import { Asset } from '../../models/asset.model';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import { Observable } from 'rxjs/Observable';
 import swal from 'sweetalert2';
+import { Member } from '../../models/member';
 
 declare const $: any;
 // declare const swal: any;
@@ -16,6 +17,21 @@ declare const $: any;
 })
 export class DepositComponent implements OnInit {
   asset: Asset;
+  public member: Member;
+  public memberList: Array<Member>;
+  public selected: Member;
+
+  errorMsg = '';
+    members = [
+      {value: 'paris-0', viewValue: 'Paris'},
+      {value: 'miami-1', viewValue: 'Miami'},
+      {value: 'bucharest-2', viewValue: 'Bucharest'},
+      {value: 'new-york-3', viewValue: 'New York'},
+      {value: 'london-4', viewValue: 'London'},
+      {value: 'barcelona-5', viewValue: 'Barcelona'},
+      {value: 'moscow-6', viewValue: 'Moscow'}
+    ];
+
 
   showNotification(from: any, align: any, msg: string) {
     $.notify({
@@ -28,6 +44,16 @@ export class DepositComponent implements OnInit {
   }
 
   constructor(private server: ServerService, private http: Http) { }
+
+  onSelect(memRef) {
+      this.selected = null;
+      for (let i = 0; i < this.memberList.length; i++) {
+        if (this.memberList[i].MemberRef === memRef.value) {
+          this.selected = this.memberList[i];
+          this.asset.MemberRef = this.selected.MemberRef;
+        }
+      }
+  }
 
   ngOnInit() {
     this.asset = {
@@ -47,6 +73,12 @@ export class DepositComponent implements OnInit {
       Note: ''
     };
     this.resetForm();
+    this.server.getMemberList().subscribe( res => {
+      this.memberList = res;
+    }, error => {
+      this.errorMsg = error;
+    }, () => {
+    });
   }
   resetForm(form?: NgForm) {
     if (form != null) {
@@ -72,7 +104,7 @@ export class DepositComponent implements OnInit {
     //     });
     // }
     // );
-    this.server.postDeposit(form.value)
+    this.server.postDepositMaker(form.value)
         .subscribe((data: any) => {
           form.reset();
           this.showNotification('top', 'center', 'Deposit success');

@@ -36,8 +36,8 @@ export class MakerApprovesComponent implements OnInit {
 
   ngOnInit() {
     this.dataTable = {
-      headerRow: ['Ref', 'FirstName', 'DateTime', 'Type', 'CreateBy', 'Request', 'Amount', 'Status'],
-      footerRow: ['Ref', 'FirstName', 'DateTime', 'Type', 'CreateBy', 'Request', 'Amount', 'Status'],
+      headerRow: ['Ref', 'FirstName', 'DateTime', 'Type', 'Request', 'Amount', 'Status'],
+      footerRow: ['Ref', 'FirstName', 'DateTime', 'Type', 'Request', 'Amount', 'Status'],
       dataRows: []
     };
     this.loadAsset();
@@ -57,45 +57,34 @@ export class MakerApprovesComponent implements OnInit {
         }
       });
       this.assetList = res;
-      this.totalDep = this.totalDepNum;
-      this.totalWith = this.totalWithNum;
-      this.isLoading = false;
     }, error => {
       this.errorMsg = error;
       this.isLoading = false;
+    }, () => {
+      this.totalDep = this.totalDepNum;
+      this.totalWith = this.totalWithNum;
+      this.isLoading = false;
     });
-    // this.dataTable.dataRows = [];
-    // this.server.getDeposits().subscribe(asset => {
-    //   this.assetList = asset;
-    //   this.assetList.forEach(item => {
-    //     this.dataTable.dataRows.push([
-    //       item.AssetRef, item.mem[0].FirstName, item.CreateDate, item.AssetType, item.CreateBy,
-    //       'Wait', item.AmountRequest.toString(), ''
-    //     ]);
-    //   });
-    // });
   }
 
   onSearch(search: string) {
     if (search === '') {
-      this.loadAsset();
+      if (!this.isLoading) { // protect search many
+        this.loadAsset();
+      }
     } else {
       this.totalDep = 0; this.totalWith = 0;
       this.assetList = this.assetList.filter(item => item.MemberLookup[0].FirstName.toString().includes(search));
       this.totalDep = this.assetList.filter(data => data.AssetType === 'Deposit').filter(item => item.Amount)
-      .map(item => parseFloat(item.Amount))
-      .reduce((sum, current) => sum + current);
+        .map(item => parseFloat(item.Amount))
+        .reduce((sum, current) => sum + current, 0);
 
       this.totalWith = this.assetList.filter(data => data.AssetType === 'Withdraw').filter(item => item.Amount)
-      .map(item => parseFloat(item.Amount))
-      .reduce((sum, current) => sum + current);
-
+        .map(item => parseFloat(item.Amount))
+        .reduce((sum, current) => sum + current, 0);
     }
-
   }
-  // onSearch() {
-  //     this.loadAsset();
-  // }
+
   onApprove(asset: Asset) {
     asset.Approve1By = JSON.parse(localStorage.getItem('profileBackend')).userid;
 

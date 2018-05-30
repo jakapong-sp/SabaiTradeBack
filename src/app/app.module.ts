@@ -48,7 +48,6 @@ import { FixedpluginModule} from './shared/fixedplugin/fixedplugin.module';
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { MakerLayoutComponent } from './layouts/maker/maker-layout.component';
-
 import { AppRoutes } from './app.routing';
 
 // my add
@@ -58,7 +57,8 @@ import { SecuredRouteGuard } from './secured-route.guard';
 import { WithdrawalsComponent } from './withdrawals/withdrawals.component';
 import { ServerService } from './server.service';
 import { SidebarmakerModule } from './sidebarmaker/sidebarmaker.module';
-
+// import { AccountsComponent } from './accounts/accounts.component';
+// import { OrdersComponent } from './traders/orders/orders.component';
 @NgModule({
   exports: [
     MatAutocompleteModule,

@@ -1,0 +1,52 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">assignment</i>
+            </div>
+            <h4 class="card-title">Withdrawal List</h4>
+          </div>
+          <div class="card-body">
+            <div class="col-md-10"></div>
+            <div class="toolbar col-md-3 float-md-right">
+              <input type="text" #search (keyup)="onSearch(search.value)" class="form-control" placeholder="Search">
+            </div>
+            <div *ngIf="isLoading" class="text-center">
+              <img src="../../../assets/img/loading.gif">
+            </div>
+            <div *ngIf="this.errorMsg != ''" class="category form-category text-center text-rose">
+            </div>
+            <div *ngIf="!isLoading" class="material-datatables">
+              <table id="datatables" class="table table-hover">
+                <thead class="text-primary">
+                  <tr>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[0] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[1] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[2] }}</th>
+                    <th style="font-weight:bold">{{ dataTable.headerRow[3] }}</th>
+                  </tr>
+                </thead>
+                <tbody style="height:18px">
+                  <tr *ngFor="let item of assetList">
+                    <td>{{ item.AssetRef }}</td>
+                    <td>{{ item.MemberLookup[0].FirstName }}</td>
+                    <td>{{ item.CreateDate | date: 'yy.MM.dd hh:mm:ss' }}</td>
+                    <td>{{ item.Amount | number : '1.0-2' }}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr style='background-color:silver;font-size:18px'>
+                    <th colspan='8'>Total : {{ this.total | number : '1.0-2'}}</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

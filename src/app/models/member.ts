@@ -1,6 +1,6 @@
 export class Member {
     id: string;
-    memberRef: string;
+    MemberRef: string;
     password: string;
     memberName: string;
     FirstName: string;

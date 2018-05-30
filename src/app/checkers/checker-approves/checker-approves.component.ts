@@ -34,8 +34,8 @@ export class CheckerApprovesComponent implements OnInit {
 
   ngOnInit() {
     this.dataTable = {
-      headerRow: ['Ref', 'FirstName', 'DateTime', 'Type', 'CreateBy', 'Request', 'Amount', 'Status'],
-      footerRow: ['Ref', 'FirstName', 'DateTime', 'Type', 'CreateBy', 'Request', 'Amount', 'Status'],
+      headerRow: ['Ref', 'FirstName', 'DateTime', 'Type', 'Request', 'Amount', 'Status'],
+      footerRow: ['Ref', 'FirstName', 'DateTime', 'Type', 'Request', 'Amount', 'Status'],
       dataRows: []
     };
     this.loadAsset();
@@ -66,17 +66,19 @@ export class CheckerApprovesComponent implements OnInit {
 
 onSearch(search: string) {
   if (search === '') {
-    this.loadAsset();
+    if (!this.isLoading) { // protect search many
+      this.loadAsset();
+    }
   } else {
     this.totalDep = 0; this.totalWith = 0;
     this.assetList = this.assetList.filter(item => item.MemberLookup[0].FirstName.toString().includes(search));
     this.totalDep = this.assetList.filter(data => data.AssetType === 'Deposit').filter(item => item.Amount)
     .map(item => parseFloat(item.Amount))
-    .reduce((sum, current) => sum + current);
+    .reduce((sum, current) => sum + current, 0);
 
     this.totalWith = this.assetList.filter(data => data.AssetType === 'Withdraw').filter(item => item.Amount)
     .map(item => parseFloat(item.Amount))
-    .reduce((sum, current) => sum + current);
+    .reduce((sum, current) => sum + current, 0);
 
   }
 
