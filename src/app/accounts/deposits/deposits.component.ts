@@ -15,7 +15,7 @@ declare interface DataTable {
 }
 
 declare const $: any;
-
+// test
 @Component({
   selector: 'app-deposits',
   templateUrl: './deposits.component.html'
